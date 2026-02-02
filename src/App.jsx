@@ -8,8 +8,8 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import SearchResults from './pages/SearchResults';
 import MovieDetails from './pages/MovieDetails';
-// import Watchlist from './pages/Watchlist';
-// import Favorites from './pages/Favorites';
+ import Watchlist from './pages/WatchList';
+ import Favorites from './pages/Favorites';
 // import NotFound from './pages/NotFound';
 
 import './App.css';
@@ -25,8 +25,8 @@ function App() {
             {/* TODO: Add other routes */}
              <Route path="/search" element={<SearchResults />} /> 
              <Route path="/movie/:imdbID" element={<MovieDetails />} />
-             {/* <Route path="/watchlist" element={<Watchlist />} />  */}
-             {/* <Route path="/favorites" element={<Favorites />} />  */}
+              <Route path="/watchlist" element={<Watchlist />} />  
+              <Route path="/favorites" element={<Favorites />} />  
              {/* <Route path="*" element={<NotFound />} />  */}
           </Routes>
         </div>

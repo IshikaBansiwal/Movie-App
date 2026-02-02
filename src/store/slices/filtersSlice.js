@@ -6,23 +6,30 @@ const filtersSlice = createSlice({
     searchTerm: "",
     type: "all",
     year: "all",
+    sort: "relevance",
   },
   reducers: {
     setSearchTerm: (state, action) => {
-      // TODO: Update search term
+      state.searchTerm = action.payload;
     },
     setType: (state, action) => {
-      // TODO: Update type filter
+      state.type = action.payload;
     },
     setYear: (state, action) => {
-      // TODO: Update year filter
+      state.year = action.payload;
+    },
+    setSort: (state, action) => {
+      state.sort = action.payload;
     },
     clearFilters: (state) => {
-      // TODO: Reset all filters
+      state.searchTerm = "";
+      state.type = "all";
+      state.year = "all";
+      state.sort = "relevance";
     },
   },
 });
 
-export const { setSearchTerm, setType, setYear, clearFilters } =
+export const { setSearchTerm, setType, setYear, setSort, clearFilters } =
   filtersSlice.actions;
 export default filtersSlice.reducer;

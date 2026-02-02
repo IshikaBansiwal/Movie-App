@@ -1,28 +1,41 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loadFromStorage, saveToStorage } from "../../services/localStorage";
+import { loadFromLocalStorage, saveToLocalStorage } from "../../utils/helpers";
+
+
+const initialState = {
+  watchlist: loadFromLocalStorage("watchlist") || [],
+  favorites: loadFromLocalStorage("favorites") || [],
+};
 
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    watchlist: loadFromStorage("watchlist", []),
-    favorites: loadFromStorage("favorites", []),
-  },
+  initialState,
   reducers: {
-    addToWatchlist: (state, action) => {
-      // TODO: Add movie ID to watchlist
-      // Save to localStorage
-    },
-    removeFromWatchlist: (state, action) => {
-      // TODO: Remove movie ID from watchlist
-      // Save to localStorage
-    },
     toggleFavorite: (state, action) => {
-      // TODO: Toggle favorite status
-      // Save to localStorage
+      const imdbID = action.payload;
+
+      if (state.favorites.includes(imdbID)) {
+        state.favorites = state.favorites.filter((id) => id !== imdbID);
+      } else {
+        state.favorites.push(imdbID);
+      }
+
+      saveToLocalStorage("favorites", state.favorites);
+    },
+
+    toggleWatchlist: (state, action) => {
+      const imdbID = action.payload;
+
+      if (state.watchlist.includes(imdbID)) {
+        state.watchlist = state.watchlist.filter((id) => id !== imdbID);
+      } else {
+        state.watchlist.push(imdbID);
+      }
+
+      saveToLocalStorage("watchlist", state.watchlist);
     },
   },
 });
 
-export const { addToWatchlist, removeFromWatchlist, toggleFavorite } =
-  userSlice.actions;
+export const { toggleFavorite, toggleWatchlist } = userSlice.actions;
 export default userSlice.reducer;

@@ -58,7 +58,6 @@ body {
   justify-content: space-between; 
 }
 
-
 .nav {
   display: flex;
   gap: 20px;
@@ -79,9 +78,6 @@ body {
   font-size: 14px;
 }
 
-
-
- 
 .movies-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -99,10 +95,6 @@ body {
   border-radius: 8px;
   
 }
-
-
-
-
 .movie-poster {
   width: 100%;
   height: 280px;

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMovieDetails } from "../store/slices/moviesSlice";
@@ -9,18 +9,27 @@ export default function MovieDetails() {
   const { imdbID } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [invalidId, setInvalidId] = useState(false);
 
   const { movieDetails, loading, error } = useSelector(
     (state) => state.movies
   );
 
-  const movie = movieDetails[imdbID]; // check cache
+  const movie = movieDetails[imdbID]; 
 
   useEffect(() => {
     if (!movie) {
+      // Validate imdbID format (OMDb uses IDs like 'tt1234567') and filter out 'undefined' strings
+      const isValid = typeof imdbID === 'string' && /^tt\d+$/.test(imdbID);
+      if (!isValid) {
+        setInvalidId(true);
+        return;
+      }
+
       dispatch(fetchMovieDetails(imdbID));
     }
   }, [dispatch, imdbID, movie]);
+
 
   return (
     <div className="container">
@@ -28,14 +37,16 @@ export default function MovieDetails() {
         className="back-btn"
         onClick={() => navigate(-1)}
       >
-        ← Back
+         Back
       </button>
 
       {loading && <LoadingSkeleton />}
 
+      {invalidId && <ErrorMessage message="Invalid IMDb ID." />}
+
       {error && <ErrorMessage message={error} />}
 
-      {!loading && movie && (
+      {!loading && !invalidId && movie && (
         <div className="movie-details">
           <img
             src={movie.Poster !== "N/A" ? movie.Poster : "/placeholder.png"}

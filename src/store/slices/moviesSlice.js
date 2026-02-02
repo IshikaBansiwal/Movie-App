@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { searchMovies, getMovieDetails } from "../../services/api";
 
-// ================= FETCH MOVIES =================
-
 export const fetchMovies = createAsyncThunk(
   "movies/fetchMovies",
   async ({ searchTerm, page, type, year }) => {
@@ -10,9 +8,6 @@ export const fetchMovies = createAsyncThunk(
     return data;
   }
 );
-
-// ================= FETCH MOVIE DETAILS =================
-
 export const fetchMovieDetails = createAsyncThunk(
   "movies/fetchMovieDetails",
   async (imdbID) => {
@@ -21,14 +16,12 @@ export const fetchMovieDetails = createAsyncThunk(
   }
 );
 
-// ================= SLICE =================
-
 const moviesSlice = createSlice({
   name: "movies",
 
   initialState: {
     searchResults: [],
-    movieDetails: {}, // cache by imdbID
+    movieDetails: {}, 
     loading: false,
     error: null,
     totalResults: 0,
@@ -50,7 +43,6 @@ const moviesSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-      // ===== FETCH MOVIES =====
 
       .addCase(fetchMovies.pending, (state) => {
         state.loading = true;
@@ -60,7 +52,7 @@ const moviesSlice = createSlice({
       .addCase(fetchMovies.fulfilled, (state, action) => {
         state.loading = false;
 
-        // Pagination support
+     
         if (state.currentPage === 1) {
           state.searchResults = action.payload.Search || [];
         } else {
@@ -75,16 +67,16 @@ const moviesSlice = createSlice({
         state.error = action.error.message;
       })
 
-      // ===== FETCH MOVIE DETAILS =====
 
       .addCase(fetchMovieDetails.pending, (state) => {
         state.loading = true;
+        state.error = null; 
       })
 
       .addCase(fetchMovieDetails.fulfilled, (state, action) => {
         state.loading = false;
 
-        // Cache movie details
+     
         state.movieDetails[action.payload.imdbID] = action.payload;
       })
 
